@@ -42,14 +42,7 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
     // rowHeight: 3,
     columnDefs: [
       {field: 'offset', maxWidth: 75, cellClass: 'grid-center', headerCellClass: 'grid-header-landoop'},
-      {field: 'partition', maxWidth: 75, cellClass: 'grid-center', headerCellClass: 'grid-header-landoop-small'},
-      {field: 'key', cellClass: 'red', width: 150, headerCellClass: 'grid-header-landoop'},
-      {
-        field: 'value', headerCellClass: 'grid-header-landoop',
-        cellTooltip: function (row, col) {
-          return 'a' + row.entity.value;
-        }
-      }
+      {field: 'partition', maxWidth: 75, cellClass: 'grid-center', headerCellClass: 'grid-header-landoop-small'}
     ]
   };
   // *********** UI- GRID **********
@@ -183,7 +176,6 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
     }
     $scope.topicIsEmpty = totalRows == 0;
 
-    $scope.gridOptions.data = rows; //TODO removeme
     return totalRows;
   }
 
@@ -497,7 +489,6 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
    //TODO move to service
     var flattenObject = function(ob) {
     	var toReturn = {};
-
     	for (var i in ob) {
     		if (!ob.hasOwnProperty(i)) continue;
 
@@ -506,8 +497,8 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
 
     			for (var x in flatObject) {
     				if (!flatObject.hasOwnProperty(x)) continue;
-    				toReturn[i + '.' + x] = flatObject[x];
-    			}
+    				toReturn[x] = flatObject[x];
+    				}
 
     		} else {
     			toReturn[i] = ob[i];
@@ -580,7 +571,16 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
 
                   $scope.flatRows.push(flattenObject(row));
 
+
                 });
+
+                          $scope.gridOptions.columnDefs.push({field: $scope.cols3.toString(), headerCellClass: 'grid-header-landoop'})
+                          console.log(typeof($scope.cols3))
+
+                          angular.forEach($scope.cols2, function(value) {
+                             $scope.gridOptions.columnDefs.push({field: value.toString(), headerCellClass: 'grid-header-landoop'})
+                          })
+                          $scope.gridOptions.data = $scope.flatRows; //TODO removeme
 
                 $scope.extraColsNumValues = extraColumnsNumberValue;
                 $scope.extraColsNumKeys = extraColumnsNumberKey;
@@ -607,5 +607,6 @@ angularAPP.controller('ViewTopicCtrl', function ($scope, $rootScope, $filter, $r
  $scope.showTree = function (keyOrValue) {
     return !(angular.isNumber(keyOrValue) || angular.isString(keyOrValue) || (keyOrValue==null));
  }
+
 
 });

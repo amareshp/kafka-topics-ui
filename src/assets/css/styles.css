@@ -347,3 +347,14 @@ md-option.itemsPerPage {
     border-top: 1px dashed #ccc;
     text-align:center;
 }
+
+[ui-grid-row] {
+display: table-row;
+}
+.ui-grid-row{height:auto!important}
+
+.ui-grid-cell {
+float: none;
+display: table-cell;
+}
+
